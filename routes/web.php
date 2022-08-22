@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+/** 
+Possibles errors del Rover
+· Aterra sobre un obstacle
+· Topa amb un obstacle
+· Se surt del Board
+
+
+Dubtes:
+Si surt per un costat entra per l'altre?
+Com s'ha de representar?
+Girar a la dreta vol dir rotar, o rotar i avançar?
+
+
+ */
+
+Route::get('/', 'MarsRoverController@index')->name('index');
+
+Route::post('/run', 'MarsRoverController@run')->name('run');

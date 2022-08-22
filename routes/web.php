@@ -29,4 +29,4 @@ Girar a la dreta vol dir rotar, o rotar i avançar?
 
 Route::get('/', 'MarsRoverController@index')->name('index');
 
-Route::post('/run', 'MarsRoverController@run')->name('run');
+Route::post('/', 'MarsRoverController@run')->name('run');

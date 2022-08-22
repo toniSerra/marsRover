@@ -7,10 +7,10 @@ class Rover
 
 
     //params
-    private static $orientations =  [ "N" => 0,  "E" => 1,"S" => 2, "W" => 3,];
+    private static $orientations =  [ "N" => 0,  "E" => 1, "S" => 2, "W" => 3,];
     private static $rotation = ["L" => -1, "F" => 0, "R" => 1];
 
-    private static $vectors =       [ [0, -1], [1, 0],[0, 1], [-1, 0],];  //vector movement for each orientation [y, x]
+    private static $vectors =       [[0, -1], [1, 0],[0, 1], [-1, 0],];  //vector movement for each orientation [x, y]
 
     //STATE
     public $x;  //Coord x
@@ -39,7 +39,7 @@ class Rover
     private function advance($board)
     {
         if ($this->checkNextPosition($board)) {
-            $board->board[$this->y][$this->x] = "path";
+            $board->board[$this->y][$this->x] = $board::getPathCell();
             $this->x += static::$vectors[$this->orientation][0];
             $this->y += static::$vectors[$this->orientation][1];
         }

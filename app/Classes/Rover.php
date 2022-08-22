@@ -4,20 +4,15 @@ namespace App\Classes;
 
 class Rover
 {
-    // private static $directions = ["↓", "→", "↑", "←",];
-
-
     //params
-    private static $orientations =  ["N" => 0,  "E" => 1, "S" => 2, "W" => 3,];
-    private static $rotation = ["L" => -1, "F" => 0, "R" => 1];
-
-    private static $vectors =       [[0, -1], [1, 0], [0, 1], [-1, 0],];  //vector movement for each orientation [x, y]
+    private static $ORIENTATIONS =  ["N" => 0,  "E" => 1, "S" => 2, "W" => 3,];
+    private static $ROTATION = ["L" => -1, "F" => 0, "R" => 1];
+    private static $VECTORS =       [[0, -1], [1, 0], [0, 1], [-1, 0],];  //vector movement for each orientation [x, y]
 
     //STATE
-    public $x;  //Coord x
-    public $y;  //Coord y
-    public $orientation; //ciclical int 0-3
-    public $interrupted = false;
+    protected $x;  //Coord x
+    protected $y;  //Coord y
+    protected $orientation; //ciclical int 0-3
 
     protected $path;
 
@@ -25,51 +20,53 @@ class Rover
     {
         $this->x = $x;
         $this->y = $y;
-        $this->orientation = static::$orientations[$orientation];
+        $this->orientation = static::$ORIENTATIONS[$orientation];
     }
 
-    public function setPath($path)
+    public function getX()
     {
-        $this->path = $path;
+        return $this->x;
     }
 
-    private function orientate($rot)
+    public function getY()
     {
-        $this->orientation = ($this->orientation + 4 + static::$rotation[$rot]) % 4;
+        return $this->y;
     }
-    private function advance(&$board)
+
+    public function run(&$b, $path)
     {
-        if ($this->checkNextPosition($board)) {
-            $board->board[$this->y][$this->x] = $board::getPathCell();
-            $this->x += static::$vectors[$this->orientation][0];
-            $this->y += static::$vectors[$this->orientation][1];
-        } else {
-            $this->interrupted = true;
-        }
-    }
-    public function run(&$b)
-    {
-        $len = strlen($this->path);
+        $len = strlen($path);
         for ($i = 0; $i < $len; $i++) {
-            $let = $this->path[$i];
+            $let = $path[$i];
             if (!str_contains("FRL", $let)) {
-                $b->errors["dir"] = "Invalid caracter: F, R, L";
+                $b->errors["path"] = "Invalid caracter: F, R, L";
+                $b->board[$this->y][$this->x] = $b::getRoverCell();
                 return;
             }
-            $this->orientate($let);
-            $this->advance($b);
+
+            $this->orientation = ($this->orientation + 4 + static::$ROTATION[$let]) % 4;
+
+            if ($this->checkNextPosition($b)) {
+                $b->board[$this->y][$this->x] = $b::getPathCell();
+                $this->x += static::$VECTORS[$this->orientation][0];
+                $this->y += static::$VECTORS[$this->orientation][1];
+                $b->board[$this->y][$this->x] = $b::getRoverCell();
+            } else {
+                $b->board[$this->y][$this->x] = $b::getRoverCell();
+                return;
+            }
         }
     }
-    protected function checkNextPosition($board, &$errors = null)
+    protected function checkNextPosition($b)
     {
-        $next_x = $this->x + static::$vectors[$this->orientation][0];
-        $next_y = $this->y + static::$vectors[$this->orientation][1];
-        if ($next_y < 0 || $next_y > $board->getYCells() || $next_x < 0 || $next_x > $board->getXCells()) {
-            $errors[] = 'out';
+        $next_x = $this->x + static::$VECTORS[$this->orientation][0];
+        $next_y = $this->y + static::$VECTORS[$this->orientation][1];
+        if ($next_y < 0 || $next_y > $b->getYCells() || $next_x < 0 || $next_x > $b->getXCells()) {
+            $b->errors['obst'] = "Rover has stopped at ($this->x, $this->y) because it was going to crash with the border.";
             return false;
         }
-        if ($board->board[$next_y][$next_x] == 1) {
-            $errors[] = 'obstacle';
+        if ($b->board[$next_y][$next_x] == 1) {
+            $b->errors['obst'] = "Rover has stopped at ($this->x, $this->y) because it was going to crash with an obstacle.";
             return false;
         }
         return true;

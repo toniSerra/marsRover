@@ -34,9 +34,9 @@ class MarsRoverController extends Controller
         //y validation
         if (!isset($req->y)) {
             $b->errors["y"] = "Required";
-        }else if (!is_numeric($req->x)) {
+        }else if (!is_numeric($req->y)) {
             $b->errors["y"] = "Has to be numeric";
-        } else if ($req->y >= $b->getYCells() || $req->x < 0) {
+        } else if ($req->y >= $b->getYCells() || $req->y < 0) {
             $b->errors["y"] = "Out of range";
         }
 
@@ -51,10 +51,7 @@ class MarsRoverController extends Controller
 
         if (count($b->errors) == 0) {
             $rover = new Rover($req->x, $req->y, $req->dir);
-            $rover->setPath($req->path);
-            $rover->run($b);
-
-            $b->addRover($rover);
+            $rover->run($b, $req->path);
         }
 
 

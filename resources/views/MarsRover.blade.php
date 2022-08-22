@@ -63,6 +63,7 @@
         <div>
             <h1>Mars Rover</h1>
             <p>Set up the initial state and path to see how the rovers moves trough the board</p>
+            <p>Build a path as "FRL" (Front, Rigth, Left) </p>
         </div>
             <form id="form" method="POST" action="{{ route('run') }}">
                 <input name="_token" type="hidden" value="{{ csrf_token() }}" />
@@ -96,6 +97,9 @@
                 </div>
 
                 <input style="margin-top:1rem" type="submit" value="Run">
+                @if(isset($board->errors['obst']))
+                         <p class="error">{{$board->errors['obst']}}</p>
+                    @endif
             </form>
         </div>
         <div style="flex: 1 0 content">

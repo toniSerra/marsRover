@@ -41,3 +41,6 @@ With enough time, I'd have loved building a nuxt project far more interactive, a
 I didn't have time enough to cover the testing part.
 I tested manually most of the funcionality, but it's not enough to guarantee the correct performance of this app.
 
+I have started with a 50x50 array, and once i got the model i've tried to scale it up.
+But It's working really slow, maybe it's my virtual machine. With more time maybe i could find a more efficient solution, or a better VM.
+

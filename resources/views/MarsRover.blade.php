@@ -69,28 +69,28 @@
                 <input name="_token" type="hidden" value="{{ csrf_token() }}" />
                 <div class="form-group">
                     <label for="x">Coord x (left to rigth)</label>
-                    <input class="form-control" id="x" name="x" placeholder="0-199" value="{{$req->x}}">
+                    <input class="form-control" id="x" name="x" placeholder="0-199" value="{{$req->x?? ''}}">
                     @if(isset($board->errors['x']))
                          <p class="error">{{$board->errors['x']}}</p>
                     @endif
                 </div>
                 <div class="form-group">
                     <label for="y">Coord y (up to down)</label>
-                    <input class="form-control" id="y" name="y" placeholder="0-199" value="{{$req->y}}">
+                    <input class="form-control" id="y" name="y" placeholder="0-199" value="{{$req->y?? ''}}">
                     @if(isset($board->errors['y']))
                          <p class="error">{{$board->errors['y']}}</p>
                     @endif
                 </div>
                 <div class="form-group">
                     <label for="dir">Orientation</label>
-                    <input class="form-control" id="dir" name="dir" placeholder="N-E-S-W" value="{{$req->dir}}">
+                    <input class="form-control" id="dir" name="dir" placeholder="N-E-S-W" value="{{$req->dir?? ''}}">
                     @if(isset($board->errors['dir']))
                          <p class="error">{{$board->errors['dir']}}</p>
                     @endif
                 </div>
                 <div class="form-group">
                     <label for="path">Path</label>
-                    <input class="form-control" id="path" name="path" value="{{$req->path}}"> 
+                    <input class="form-control" id="path" name="path" value="{{$req->path?? ''}}"> 
                     @if(isset($board->errors['path']))
                          <p class="error">{{$board->errors['path']}}</p>
                     @endif
